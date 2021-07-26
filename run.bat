@@ -9,5 +9,7 @@ SET DD_VERSION=0.1
 SET DD_LOGS_INJECTION=true
 SET DD_TAGS=xom_org:FLCIT,xom_env:tootest,xom_app_support_group:tocomplete,xom:app_name:china_oneconnect,xom_app_id:APP-12070,xom_hosting_env:alibaba,xom_hosting_type:paas
 
+SET ASPNETCORE_URLS=http://*:4477
+
 rem Launch application
 bin\Release\net5.0\tootest-dotnet.exe
