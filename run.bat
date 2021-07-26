@@ -1,0 +1,12 @@
+SET CORECLR_ENABLE_PROFILING=1
+SET CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
+
+
+
+SET DD_ENV=tootest
+SET DD_SERVICE=tootest-dotnet
+SET DD_VERSION=0.1
+SET DD_LOGS_INJECTION=true
+
+rem Launch application
+bin\Release\net5.0\tootest-dotnet.exe
