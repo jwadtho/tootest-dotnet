@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tootest-dotnet-service
+  namespace: {NAMESPACE}
+  labels:
+    app: tootest-dotnet
+spec:
+  selector:
+    app: tootest-dotnet
+  ports:
+  - port: 4477
+    protocol: TCP
+    targetPort: 4477
+  type: LoadBalancer

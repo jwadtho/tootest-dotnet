@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tootest-dotnet-deployment
+  namespace: {NAMESPACE}
+  labels:
+    app: tootest-dotnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tootest-dotnet
+  template:
+    metadata:
+      labels:
+        app: tootest-dotnet
+    spec:
+      containers:
+      - name: tootest-dotnet
+        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4477
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+      imagePullSecrets:
+        - name: alibaba-registry-credential-tootest-dotnet
+   
