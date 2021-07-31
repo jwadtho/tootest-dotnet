@@ -27,16 +27,16 @@ COPY --from=publish /app/publish .
 
 # Please select the corresponding download for your Linux containers https://github.com/DataDog/dd-trace-dotnet/releases/latest
 
-# Download and install the Tracer
-RUN mkdir -p /opt/datadog
-RUN curl -L https://github.com/DataDog/dd-trace-dotnet/releases/download/v1.28.0/datadog-dotnet-apm-1.28.0.tar.gz \
-|  ar xzf - -C /opt/datadog
-
-# Enable the tracer
-ENV CORECLR_ENABLE_PROFILING=1
-ENV CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
-ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
-ENV DD_DOTNET_TRACER_HOME=/opt/datadog
-ENV DD_INTEGRATIONS=/opt/datadog/integrations.json
+## Download and install the Tracer
+#RUN mkdir -p /opt/datadog
+#RUN curl -L https://github.com/DataDog/dd-trace-dotnet/releases/download/v1.28.0/datadog-dotnet-apm-1.28.0.tar.gz \
+#|  ar xzf - -C /opt/datadog
+#
+## Enable the tracer
+#ENV CORECLR_ENABLE_PROFILING=1
+#ENV CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
+#ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
+#ENV DD_DOTNET_TRACER_HOME=/opt/datadog
+#ENV DD_INTEGRATIONS=/opt/datadog/integrations.json
 
 ENTRYPOINT ["dotnet", "tootest-dotnet.dll"]
