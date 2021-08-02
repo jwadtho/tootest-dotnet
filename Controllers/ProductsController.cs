@@ -34,8 +34,8 @@ namespace tootest_dotnet.Controllers
         public async Task<IActionResult> GetByName([FromQuery] string name)
         {
             var @params = new Dictionary<string, object> { { "@name", name } };
-            var productName = await dbConnection.QueryAsync<string>("SELECT name FROM ch_product.product WHERE name = @name", @params);
-            return this.Ok(productName);
+            var products = await dbConnection.QueryAsync<object>("SELECT * FROM ch_product.product WHERE name = @name", @params);
+            return this.Ok(products);
         }
     }
 }
