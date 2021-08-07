@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,11 +14,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MySqlConnector;
+using NLog;
 
 namespace tootest_dotnet
 {
     public class Startup
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,7 +32,7 @@ namespace tootest_dotnet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = $"Server=rm-gs5sie41gt309b8jnqo.mysql.singapore.rds.aliyuncs.com;Port=3306;Database=ch_product;User Id=test_user;Password=tZ#-LaUj9=CL$BBT";
+            var connectionString = $"Server=rm-gs5sie41gt309b8jnro.mysql.singapore.rds.aliyuncs.com;Port=3306;Database=ch_product;User Id=test_read;Password=g!Kd6U94GnkuMA%q";
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -49,9 +53,13 @@ namespace tootest_dotnet
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tootest_dotnet v1"));
             }
 
+
+            logger.Info($"Hi Too!...{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}");
+            //Console.WriteLine($"Hi Too!...{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}");
+            app.UsePathBase(new PathString("/tootest"));
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthorization(); 
 
             app.UseEndpoints(endpoints =>
             {

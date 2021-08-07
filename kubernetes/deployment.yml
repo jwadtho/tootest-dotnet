@@ -20,8 +20,8 @@ spec:
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
         imagePullPolicy: IfNotPresent
         env:
-        - name: aliyun_logs_tootest_fotnet
-            value: stdout
+        - name: aliyun_logs_tootest_dotnet
+          value: stdout
         ports:
         - containerPort: 4477
         resources:
