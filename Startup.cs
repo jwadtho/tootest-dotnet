@@ -1,20 +1,26 @@
 using System;
-using System.Collections.Generic;
+
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+
+using Jaeger;
+using Jaeger.Reporters;
+using Jaeger.Samplers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MySqlConnector;
 using NLog;
+using OpenTracing;
+using OpenTracing.Contrib.NetCore.Configuration;
+using OpenTracing.Util;
 
 namespace tootest_dotnet
 {
@@ -41,6 +47,8 @@ namespace tootest_dotnet
             });
             services.AddDbContext<Context>(opt => opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
             services.AddTransient<IDbConnection>(s => new MySqlConnection(connectionString));
+
+            ConfigureJaeger(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +72,38 @@ namespace tootest_dotnet
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+        }
+
+        private void ConfigureJaeger(IServiceCollection services)
+        {
+            // Registers OpenTracing.Contrib.NetCore to instrument the application. 
+            services.AddOpenTracing();
+            // Filters requests that are collected by HttpClient to obtain requests for using Jaeger to report data. 
+            var httpOption = new HttpHandlerDiagnosticOptions();
+            httpOption.IgnorePatterns.Add(req => req.RequestUri.AbsolutePath.Contains("/api/traces"));
+            services.AddSingleton(Options.Create(httpOption));
+
+            // Adds the Jaeger Tracer.
+            services.AddSingleton<ITracer>(serviceProvider =>
+            {
+                //string serviceName = serviceProvider.GetRequiredService<IWebHostEnvironment>().ApplicationName;
+                string serviceName = "tootest_dotnet";
+                ILoggerFactory loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+                Configuration.SenderConfiguration senderConfiguration = new Configuration.SenderConfiguration(loggerFactory)
+                 //(访问https://tracing-analysis.console.aliyun.com 获取jaeger endpoint)
+                 .WithEndpoint("http://tracing-analysis-dc-sh-internal.aliyuncs.com/adapt_ai31mu20eu@a75cdfaffe00107_ai31mu20eu@53df7ad2afe8301/api/traces");
+
+                // This will log to a default localhost installation of Jaeger.
+                var tracer = new Tracer.Builder(serviceName)
+                    .WithSampler(new ConstSampler(true))
+                    .WithReporter(new RemoteReporter.Builder().WithSender(senderConfiguration.GetSender()).Build())
+                    .Build();
+
+                // Allows code that can't use DI to also access the tracer.
+                GlobalTracer.Register(tracer);
+
+                return tracer;
             });
         }
     }
