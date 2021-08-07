@@ -19,12 +19,15 @@ spec:
       - name: tootest-dotnet
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
         imagePullPolicy: IfNotPresent
+        env:
+        - name: aliyun_logs_tootest_fotnet
+            value: stdout
         ports:
         - containerPort: 4477
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
+            memory: "2G"
+            cpu: "1"
       imagePullSecrets:
         - name: alibaba-registry-credential-tootest-dotnet
    
