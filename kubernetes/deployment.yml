@@ -22,12 +22,46 @@ spec:
         env:
         - name: aliyun_logs_tootest_dotnet
           value: stdout
+        - name: DD_ENV
+          value: "occ-tootest"
+        - name: DD_SERVICE
+          value: "tootest-dotnet"
+        - name: DD_VERSION
+          value: "0.1"
+        - name: DD_AGENT_HOST
+          value: "datadog-service"
+        - name: DD_LOGS_INJECTION
+          value: "true"
+        - name: DD_RUNTIME_METRICS_ENABLED
+          value: "true"
+        - name: DD_TRACE_LOG_PATH
+          value: "/logs/"
         ports:
         - containerPort: 4477
+        volumeMounts:
+          - name: log-storage
+            mountPath: /logs/
+          - name: fluentbit-volume
+            mountPath: /fluent-bit/etc/
         resources:
           requests:
             memory: "2G"
             cpu: "1"
+      - name: log-collector
+        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:2
+        resources:
+          limits:
+            cpu: 100m
+            memory: 200Mi
+      volumeMounts:
+        - name: log-storage
+          readOnly: true
+          mountPath: /mnt/log
       imagePullSecrets:
         - name: alibaba-registry-credential-tootest-dotnet
-   
+      volumes:
+      - name: log-storage
+        emptyDir: { }
+      - name: fluentbit-volume
+        configMap:
+          name: tootest-dotnet-fluentbit
