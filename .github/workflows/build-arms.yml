@@ -53,11 +53,18 @@ jobs:
         access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
         instance-id: "${{ env.ACR_EE_INSTANCE_ID }}"
 
-    - name: Build image
-      run: docker build -t "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$VERSION" .
+#     - name: Build image
+#       run: docker build -t "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$VERSION" .
 
-    - name: Push image to ACR EE
-      run: docker push "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$VERSION"
+#     - name: Push image to ACR EE
+#       run: docker push "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$VERSION"
+      
+    - name: Build and Push to ACR
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: "${{ env.ACR_EE_REGISTRY }}/${{ env.ACR_EE_NAMESPACE }}/${{ env.ACR_EE_IMAGE }}:${{ env.VERSION }}"
 
     - name: Generate secret from docker config
       run: |
