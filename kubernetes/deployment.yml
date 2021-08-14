@@ -17,6 +17,9 @@ spec:
     metadata:
       labels:
         app: tootest-dotnet
+        tags.datadoghq.com/env: "occ-tootest"
+        tags.datadoghq.com/service: "tootest-dotnet"
+        tags.datadoghq.com/version: "0.1"
     spec:
       containers:
       - name: tootest-dotnet
