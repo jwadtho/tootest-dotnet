@@ -5,10 +5,9 @@ metadata:
   namespace: {NAMESPACE}
   labels:
     app: tootest-dotnet
-labels:
-  tags.datadoghq.com/env: "occ-tootest"
-  tags.datadoghq.com/service: "tootest-dotnet"
-  tags.datadoghq.com/version: "0.1"
+    tags.datadoghq.com/env: "occ-tootest"
+    tags.datadoghq.com/service: "tootest-dotnet"
+    tags.datadoghq.com/version: "0.1"
 spec:
   replicas: 1
   selector:
