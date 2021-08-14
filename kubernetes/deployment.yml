@@ -28,6 +28,8 @@ spec:
           value: "tootest-dotnet"
         - name: DD_VERSION
           value: "0.1"
+        - name: DD_SOURCE
+          value: "csharp"
         - name: DD_AGENT_HOST
           value: "datadog-service"
         - name: DD_LOGS_INJECTION
