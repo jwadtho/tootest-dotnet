@@ -5,6 +5,10 @@ metadata:
   namespace: {NAMESPACE}
   labels:
     app: tootest-dotnet
+labels:
+  tags.datadoghq.com/env: "occ-tootest"
+  tags.datadoghq.com/service: "tootest-dotnet"
+  tags.datadoghq.com/version: "0.1"
 spec:
   replicas: 1
   selector:
@@ -23,11 +27,17 @@ spec:
         - name: aliyun_logs_tootest_dotnet
           value: stdout
         - name: DD_ENV
-          value: "occ-tootest"
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/env']
         - name: DD_SERVICE
-          value: "tootest-dotnet"
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/service']
         - name: DD_VERSION
-          value: "0.1"
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/version']
         - name: DD_SOURCE
           value: "csharp"
         - name: DD_AGENT_HOST
