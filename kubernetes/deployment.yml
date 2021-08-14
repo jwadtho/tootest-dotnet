@@ -48,8 +48,6 @@ spec:
           value: "true"
         - name: DD_RUNTIME_METRICS_ENABLED
           value: "true"
-        - name: DD_TRACE_LOG_PATH
-          value: "/app/logs/"
         ports:
         - containerPort: 4477
         volumeMounts:
@@ -62,7 +60,7 @@ spec:
             memory: "2G"
             cpu: "1"
       - name: log-collector
-        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:2
+        image: xom-ecomm-acr02-registry-vpc.cn-shanghai.cr.aliyuncs.com/fluent/fluent-bit:1.8.3
         resources:
           limits:
             cpu: 100m
@@ -78,4 +76,4 @@ spec:
         emptyDir: { }
       - name: fluentbit-volume
         configMap:
-          name: tootest-dotnet-fluentbit
+          name: fluent-bit-config
