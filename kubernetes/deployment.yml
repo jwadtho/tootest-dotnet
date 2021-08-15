@@ -53,12 +53,10 @@ spec:
         volumeMounts:
           - name: log-storage
             mountPath: /app/logs/
-          - name: fluentbit-volume
-            mountPath: /fluent-bit/etc/
+         
         resources:
           requests:
-            memory: "2G"
-            cpu: "1"
+            cpu: "0.5"
       - name: log-collector
         image: xom-ecomm-acr02-registry-vpc.cn-shanghai.cr.aliyuncs.com/fluent/fluent-bit:1.8.3
         resources:
@@ -69,6 +67,8 @@ spec:
           - name: log-storage
             readOnly: true
             mountPath: /mnt/log
+          - name: fluentbit-volume
+            mountPath: /fluent-bit/etc/
       imagePullSecrets:
         - name: alibaba-registry-credential-tootest-dotnet
       volumes:
