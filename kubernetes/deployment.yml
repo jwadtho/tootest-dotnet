@@ -58,7 +58,7 @@ spec:
           requests:
             cpu: "0.5"
       - name: log-collector
-        image: xom-ecomm-acr02-registry-vpc.cn-shanghai.cr.aliyuncs.com/fluent/fluent-bit:1.8.3
+        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/fluent/fluent-bit:1.8.3
         resources:
           limits:
             cpu: 100m
