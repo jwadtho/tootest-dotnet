@@ -22,6 +22,9 @@ spec:
       - name: tootest-dotnet
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
         imagePullPolicy: IfNotPresent
+        command:
+          - /bin/sh
+          - /xom-data/run.sh
         env:
         - name: aliyun_logs_tootest_dotnet
           value: stdout
@@ -50,7 +53,8 @@ spec:
         volumeMounts:
           - name: log-storage
             mountPath: /app/logs/
-         
+          - name: xom-data
+            mountPath: /xom-data
         resources:
           requests:
             cpu: "0.5"
@@ -66,6 +70,12 @@ spec:
             mountPath: /mnt/log
           - name: fluentbit-volume
             mountPath: /fluent-bit/etc/
+      initContainers:
+        - name: datadog-tracer
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/dotnet-datadog-tracer:c6607015b1a3e3c994b6d30a886c1c4c716afcb6
+          volumeMounts:
+            - name: xom-data
+              mountPath: /xom-data
       imagePullSecrets:
         - name: alibaba-registry-credential-tootest-dotnet
       volumes:
@@ -74,3 +84,5 @@ spec:
       - name: fluentbit-volume
         configMap:
           name: fluent-bit-config
+      - name: xom-data
+        emptyDir: { }
