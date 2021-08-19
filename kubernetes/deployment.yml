@@ -74,7 +74,7 @@ spec:
             mountPath: /fluent-bit/etc/
       initContainers:
         - name: datadog-tracer
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/dotnet-datadog-tracer:60f612f4d27a297db5097dedfe3229d7ef43f614
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/dotnet-datadog-tracer:5561044b9f1b11c4c71692332111398516bdbaba
           command: [ "bash", "-c" ]
           args:
             - cp -r /xom-data /dd-temp
