@@ -24,7 +24,7 @@ spec:
         imagePullPolicy: IfNotPresent
         command:
           - /bin/sh
-          - /xom-data/run.sh
+          - .../App/xom-data/run.sh
         env:
         - name: aliyun_logs_tootest_dotnet
           value: stdout
@@ -73,9 +73,12 @@ spec:
       initContainers:
         - name: datadog-tracer
           image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/dotnet-datadog-tracer:c6607015b1a3e3c994b6d30a886c1c4c716afcb6
+          command: [ "bash", "-c" ]
+            args:
+              - cp -r /xom-data /dd-temp
           volumeMounts:
             - name: xom-data
-              mountPath: /xom-data
+              mountPath: /dd-temp
       imagePullSecrets:
         - name: alibaba-registry-credential-tootest-dotnet
       volumes:
