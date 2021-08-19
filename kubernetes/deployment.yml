@@ -74,8 +74,8 @@ spec:
         - name: datadog-tracer
           image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/dotnet-datadog-tracer:c6607015b1a3e3c994b6d30a886c1c4c716afcb6
           command: [ "bash", "-c" ]
-            args:
-              - cp -r /xom-data /dd-temp
+          args:
+            - cp -r /xom-data /dd-temp
           volumeMounts:
             - name: xom-data
               mountPath: /dd-temp
