@@ -78,7 +78,7 @@ spec:
             - cp -r /xom-data /dd-temp
           volumeMounts:
             - name: xom-data
-              mountPath: /dd-temp
+              mountPath: /dd-temp/xom-data
       imagePullSecrets:
         - name: alibaba-registry-credential-tootest-dotnet
       volumes:
