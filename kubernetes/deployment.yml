@@ -42,10 +42,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.labels['tags.datadoghq.com/version']
-        - name: DD_SOURCE
-          value: "csharp"
         - name: DD_AGENT_HOST
-          value: "datadog-service"
+          value: "datadog-service.tootest.svc.cluster.local"
         - name: DD_LOGS_INJECTION
           value: "true"
         - name: DD_RUNTIME_METRICS_ENABLED
