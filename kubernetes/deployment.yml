@@ -18,7 +18,7 @@ spec:
         tags.datadoghq.com/service: "tootest-dotnet"
         tags.datadoghq.com/version: GITHUB_SHA
         tags.datadoghq.com/source: "csharp"
-        tags.datadoghq.com/version: "tootest"
+        tags.datadoghq.com/occ-service-domain: "tootest"
     spec:
       containers:
       - name: tootest-dotnet
@@ -93,8 +93,7 @@ spec:
           - name: log-storage
             readOnly: true
             mountPath: /mnt/log
-          - name: fluentbit-volume
-            mountPath: /fluent-bit/etc/
+      
       initContainers:
         - name: datadog-tracer
           image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/dotnet-datadog-tracer:9313290995537746b6fb862676d74cbc803a73ee
@@ -109,8 +108,5 @@ spec:
       volumes:
       - name: log-storage
         emptyDir: { }
-      - name: fluentbit-volume
-        configMap:
-          name: fluent-bit-config
       - name: xom-data
         emptyDir: { }
