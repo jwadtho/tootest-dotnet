@@ -17,6 +17,8 @@ spec:
         tags.datadoghq.com/env: "occ-tootest"
         tags.datadoghq.com/service: "tootest-dotnet"
         tags.datadoghq.com/version: "0.1"
+        tags.datadoghq.com/source: "csharp"
+        tags.datadoghq.com/version: "tootest"
     spec:
       containers:
       - name: tootest-dotnet
@@ -62,6 +64,27 @@ spec:
             cpu: "0.5"
       - name: log-collector
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:2.2
+        env:
+        - name: DD_ENV
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/env']
+        - name: DD_SERVICE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/service']
+        - name: DD_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/version']
+        - name: DD_SOURCE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/source']
+        - name: OCC_SERVICE_DOMAIN
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/occ-service-domain']
         resources:
           limits:
             cpu: 100m
