@@ -32,8 +32,6 @@ spec:
           value: stdout
         - name: APP_PATH
           value: /app/tootest-dotnet.dll
-        - name: OCC_SERVICE_DOMAIN
-          value: tootest
         - name: DD_ENV
           valueFrom:
             fieldRef:
