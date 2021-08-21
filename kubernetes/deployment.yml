@@ -15,8 +15,8 @@ spec:
       labels:
         app: tootest-dotnet
         tags.datadoghq.com/env: "occ-tootest"
-        tags.datadoghq.com/service: GITHUB_SHA
-        tags.datadoghq.com/version: "0.1"
+        tags.datadoghq.com/service: "tootest-dotnet"
+        tags.datadoghq.com/version: GITHUB_SHA
         tags.datadoghq.com/source: "csharp"
         tags.datadoghq.com/version: "tootest"
     spec:
