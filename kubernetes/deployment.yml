@@ -30,6 +30,8 @@ spec:
           value: stdout
         - name: APP_PATH
           value: /app/tootest-dotnet.dll
+        - name: OCC_SERVICE_DOMAIN
+          value: tootest
         - name: DD_ENV
           valueFrom:
             fieldRef:
@@ -59,7 +61,7 @@ spec:
           requests:
             cpu: "0.5"
       - name: log-collector
-        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/fluent/fluent-bit:1.8.3
+        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/fluent/fluent-bit:2.2
         resources:
           limits:
             cpu: 100m
