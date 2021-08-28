@@ -120,9 +120,6 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.namespace
-          volumeMounts:
-          - mountPath: /dd-output-config
-            name: k8s-tags-config
       volumes:
       - name: log-storage
         emptyDir: { }
