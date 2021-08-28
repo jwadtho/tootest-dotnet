@@ -12,6 +12,8 @@ spec:
       app: tootest-dotnet
   template:
     metadata:
+      annotations:
+        k8s.aliyun.com/acr-instance-id: cri-3fynibeigjxpi5o6
       labels:
         app: tootest-dotnet
         tags.datadoghq.com/env: "occ-tootest"
@@ -61,7 +63,7 @@ spec:
           requests:
             cpu: "0.5"
       - name: log-collector
-        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:2.3
+        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:2.5
         env:
         - name: DD_ENV
           valueFrom:
@@ -91,7 +93,10 @@ spec:
           - name: log-storage
             readOnly: true
             mountPath: /mnt/log
-      
+          - name: k8s-tags-app
+            mountPath: /fluent-bit/etc/output-datadog.conf
+            subPath: output-datadog.conf
+
       initContainers:
         - name: datadog-tracer
           image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/dotnet-datadog-tracer:9313290995537746b6fb862676d74cbc803a73ee
@@ -101,10 +106,30 @@ spec:
           volumeMounts:
             - name: xom-data
               mountPath: /dd-temp/xom-data
-      imagePullSecrets:
-        - name: alibaba-registry-credential-tootest-dotnet
+        - name: k8s-tags
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/k8s-tags:52a9fa4399b37d82927962bba0d2f75ad75b2242
+          imagePullPolicy: IfNotPresent
+          command: [ "bash", "-c" ]
+          args:
+            - cp /app/output-datadog.conf /dk8s-tags-app
+          volumeMounts:
+            - name: k8s-tags-app
+              mountPath: /k8s-tags-app
+          env:
+            - name: KUBE_POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: KUBE_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
       volumes:
       - name: log-storage
         emptyDir: { }
       - name: xom-data
         emptyDir: { }
+      - name: k8s-tags-app
+        emptyDir: {}
