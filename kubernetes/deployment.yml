@@ -109,9 +109,6 @@ spec:
         - name: k8s-tags
           image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/k8s-tags:7ae7321a81ba5d9406c308c3fd00163bcba8d9d4
           imagePullPolicy: IfNotPresent
-          volumeMounts:
-            - name: k8s-tags-config
-              mountPath: /dd-output-config
           env:
             - name: KUBE_POD_NAME
               valueFrom:
@@ -123,6 +120,9 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.namespace
+          volumeMounts:
+            - name: k8s-tags-config
+              mountPath: /dd-output-config
       volumes:
       - name: log-storage
         emptyDir: { }
