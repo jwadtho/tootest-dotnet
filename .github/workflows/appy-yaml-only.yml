@@ -18,9 +18,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dotnet-version: [ '5.0.x' ]
 
     steps:
     - uses: actions/checkout@v2
@@ -76,8 +73,7 @@ jobs:
     # Prepare k8s yaml files
     - name: Set variable to yaml files
       run: |
-        sed -e "s#{NAMESPACE}#tootest#g" kubernetes/pullImageSecret.yml > kubernetes/pullImageSecret.yaml
         sed -e "s#{NAMESPACE}#tootest#g" kubernetes/deployment.yml > kubernetes/deployment.yaml
         sed -e "s#{NAMESPACE}#tootest#g" kubernetes/service.yml > kubernetes/service.yaml
-        kubectl apply -R -f kubernetes/namespace.yml -f kubernetes/pullImageSecret.yaml -f kubernetes/deployment.yaml -f kubernetes/service.yaml
+        kubectl apply -R -f kubernetes/namespace.yml -f kubernetes/deployment.yaml -f kubernetes/service.yaml
 
