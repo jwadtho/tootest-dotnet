@@ -34,11 +34,11 @@ jobs:
 #    - name: Build
 #      run: dotnet build tootest-dotnet.sln --configuration Release --no-restore
 #
-#    - name: GitHub SHA
-#      run: |
-#          GITHUB_SHA="$GITHUB_SHA"
-#          echo "VERSION=$GITHUB_SHA" >> $GITHUB_ENV
-#          sed -i "s/GITHUB_SHA/$GITHUB_SHA/g" ./kubernetes/deployment.yml
+    - name: GitHub SHA
+      run: |
+          GITHUB_SHA="$GITHUB_SHA"
+          echo "VERSION=$GITHUB_SHA" >> $GITHUB_ENV
+          sed -i "s/GITHUB_SHA/$GITHUB_SHA/g" ./kubernetes/deployment.yml
 #
 #
 #    - name: Login to ACR EE with the AccessKey pair
