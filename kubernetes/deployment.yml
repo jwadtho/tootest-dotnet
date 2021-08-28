@@ -94,8 +94,8 @@ spec:
             readOnly: true
             mountPath: /mnt/log
           - name: k8s-tags-config
-            mountPath: /fluent-bit/etc/output-datadog.conf
-            subPath: output-datadog.conf
+            mountPath: /fluent-bit/etc
+#            subPath: output-datadog.conf
 
       initContainers:
         - name: datadog-tracer
@@ -107,8 +107,11 @@ spec:
             - name: xom-data
               mountPath: /dd-temp/xom-data
         - name: k8s-tags
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/k8s-tags:7ae7321a81ba5d9406c308c3fd00163bcba8d9d4
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/k8s-tags:f15c44ad6a59e7feeed36b11aa355883b6842ed4
           imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /dd-output-config
+              name: k8s-tags-config
           env:
             - name: KUBE_POD_NAME
               valueFrom:
@@ -120,6 +123,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.namespace
+
       volumes:
       - name: log-storage
         emptyDir: { }
