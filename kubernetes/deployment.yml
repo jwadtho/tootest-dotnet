@@ -93,7 +93,7 @@ spec:
           - name: log-storage
             readOnly: true
             mountPath: /mnt/log
-          - name: k8s-tags-app
+          - name: k8s-tags-config
             mountPath: /fluent-bit/etc/output-datadog.conf
             subPath: output-datadog.conf
 
@@ -107,14 +107,11 @@ spec:
             - name: xom-data
               mountPath: /dd-temp/xom-data
         - name: k8s-tags
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/k8s-tags:52a9fa4399b37d82927962bba0d2f75ad75b2242
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/k8s-tags:ddf775df3d81469857ee81ba4f8aed9f2825d4d3
           imagePullPolicy: IfNotPresent
-          command: [ "bash", "-c" ]
-          args:
-            - cp /app/output-datadog.conf /dk8s-tags-app
           volumeMounts:
-            - name: k8s-tags-app
-              mountPath: /k8s-tags-app
+            - name: k8s-tags-config
+              mountPath: /dd-output-config
           env:
             - name: KUBE_POD_NAME
               valueFrom:
@@ -131,5 +128,5 @@ spec:
         emptyDir: { }
       - name: xom-data
         emptyDir: { }
-      - name: k8s-tags-app
+      - name: k8s-tags-config
         emptyDir: {}
