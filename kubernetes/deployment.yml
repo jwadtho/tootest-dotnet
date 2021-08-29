@@ -110,7 +110,8 @@ spec:
             readOnly: true
             mountPath: /mnt/log
           - name: tagger
-            mountPath: /bin
+            mountPath: /bin/tagger
+            subPath: tagger
 
       initContainers:
         - name: datadog-tracer
@@ -127,8 +128,7 @@ spec:
           command: [ "/bin/sh", "-c" ]
           args:
             - >
-              cp -r /usr/local/bin/tagger /tagger &&
-              cp -r /bin/sh /tagger
+              cp -r /usr/local/bin/tagger /tagger
           volumeMounts:
             - mountPath: /tagger
               name: tagger
