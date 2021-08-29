@@ -22,6 +22,7 @@ spec:
         tags.datadoghq.com/source: "csharp"
         tags.datadoghq.com/occ-service-domain: "tootest"
     spec:
+      serviceAccountName: datadog-agent
       containers:
       - name: tootest-dotnet
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
@@ -63,13 +64,23 @@ spec:
           requests:
             cpu: "0.5"
       - name: log-collector
-        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:2.6
+        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:2.7
         command: [ "/bin/sh", "-c" ]
         args:
           - >
             tagger /fluent-bit/etc/output-datadog.conf  &&
             /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
         env:
+        - name: KUBE_POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: KUBE_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
         - name: DD_ENV
           valueFrom:
             fieldRef:
@@ -115,7 +126,9 @@ spec:
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "-c" ]
           args:
-            - cp -r /usr/local/bin/tagger /tagger
+            - >
+              cp -r /usr/local/bin/tagger /tagger &&
+              cp -r /bin/sh /tagger
           volumeMounts:
             - mountPath: /tagger
               name: tagger
