@@ -64,7 +64,7 @@ spec:
             cpu: "0.5"
       - name: log-collector
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:2.6
-        command: [ "/bin/bash", "-c" ]
+        command: [ "/bin/sh", "-c" ]
         args:
           - >
             tagger /fluent-bit/etc/output-datadog.conf  &&
