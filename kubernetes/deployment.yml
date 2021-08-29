@@ -115,7 +115,7 @@ spec:
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "-c" ]
           args:
-            - cp -r /bin/tagger /tagger
+            - cp -r /usr/local/bin/tagger /tagger
           volumeMounts:
             - mountPath: /tagger
               name: tagger
