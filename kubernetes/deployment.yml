@@ -123,7 +123,7 @@ spec:
             - name: xom-data
               mountPath: /dd-temp/xom-data
         - name: tagger
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/tagger:1.1
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/tagger:1.2
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "-c" ]
           args:
