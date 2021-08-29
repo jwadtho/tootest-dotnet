@@ -126,7 +126,9 @@ spec:
           image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/tagger:1.1
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "-c" ]
-          args: cp -r /usr/local/bin/tagger /tagger
+          args:
+            - >
+              cp -r /usr/local/bin/tagger /tagger
           volumeMounts:
             - mountPath: /tagger
               name: tagger
