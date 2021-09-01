@@ -70,9 +70,11 @@ spec:
           - '-c'
           - |
             #!/bin/sh
-            export LOG_PATH=/pod-stdlog/$(cat CONTAINER_NAME)/*.log
-
             tagger /fluent-bit/etc/output-datadog.conf
+            export LOG_PATH=/pod-stdlog/$(cat CONTAINER_NAME)/*.log
+            echo "\n--------------------------\n"
+            echo "From Shell script:LOG_PATH:$LOG_PATH"
+            echo "\n--------------------------\n"
             /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
         env:
         - name: AUTO_INJECT_LOG_PATH
@@ -131,7 +133,7 @@ spec:
             - name: xom-data
               mountPath: /dd-temp/xom-data
         - name: tagger
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/tagger:1.6
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/tagger:1.7
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "-c" ]
           args:
