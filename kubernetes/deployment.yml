@@ -65,10 +65,14 @@ spec:
             cpu: "0.5"
       - name: log-collector
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:3.1
-        command: [ "/bin/sh", "-c" ]
-        args:
-          - >
-            tagger /fluent-bit/etc/output-datadog.conf  &&
+        command:
+          - /bin/sh
+          - '-c'
+          - |
+            #!/bin/sh
+            export LOG_PATH=/pod-stdlog/$(cat CONTAINER_NAME)/*.log
+
+            tagger /fluent-bit/etc/output-datadog.conf
             /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
         env:
         - name: AUTO_INJECT_LOG_PATH
@@ -125,7 +129,7 @@ spec:
             - name: xom-data
               mountPath: /dd-temp/xom-data
         - name: tagger
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/tagger:1.4
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/tagger:1.6
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "-c" ]
           args:
