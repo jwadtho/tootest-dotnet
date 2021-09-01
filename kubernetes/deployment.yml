@@ -72,7 +72,7 @@ spec:
             /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
         env:
         - name: LOG_PATH
-            value: /pod-stdlog/tootest-dotnet/*.log
+          value: /pod-stdlog/tootest-dotnet/*.log
         - name: KUBE_POD_NAME
           valueFrom:
             fieldRef:
