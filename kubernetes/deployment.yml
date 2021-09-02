@@ -27,9 +27,9 @@ spec:
       - name: tootest-dotnet
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
         imagePullPolicy: IfNotPresent
-        command:
-          - /bin/sh
-          - /xom-data/run.sh
+        command: [ "/bin/sh", "-c" ]
+        args:
+          - /tracer-download/run.sh
         env:
         - name: APP_PATH
           value: /app/Xom.Bcs.tootest-dotnet.Api.dll
@@ -56,20 +56,17 @@ spec:
         volumeMounts:
           - name: log-storage
             mountPath: /app/logs/
-          - name: xom-data
-            mountPath: /xom-data
+          - name: tracer-download
+            mountPath: /tracer-download
         resources:
           requests:
             cpu: "0.5"
       - name: log-collector
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:3.4
-        command:
-          - /bin/sh
-          - '-c'
+        command: [ "/bin/sh", "-c" ]
+        args:
           - |
-            #!/bin/sh
             tagger /fluent-bit/etc/output-datadog.conf /fluent-bit/etc/input-tail.conf
-
             /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
         env:
         - name: AUTO_INJECT_LOG_PATH
@@ -120,20 +117,19 @@ spec:
 
       initContainers:
         - name: datadog-tracer
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/dotnet-datadog-tracer:1.1
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/dotnet-datadog-tracer:1.2
           command: [ "bash", "-c" ]
           args:
-            - cp -r /xom-data /dd-temp
+            - cp -r /tracer-download /dd-temp
           volumeMounts:
-            - name: xom-data
-              mountPath: /dd-temp/xom-data
+            - name: tracer-download
+              mountPath: /dd-temp/tracer-download
         - name: tagger
           image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/tagger:2.1
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "-c" ]
           args:
-            - >
-              cp -r /usr/local/bin/tagger /tagger
+            - cp -r /usr/local/bin/tagger /tagger
           volumeMounts:
             - mountPath: /tagger
               name: tagger
@@ -143,7 +139,7 @@ spec:
           driver: alicloud/pod-stdlog
       - name: log-storage
         emptyDir: { }
-      - name: xom-data
+      - name: tracer-download
         emptyDir: { }
       - name: tagger
         emptyDir: {}
