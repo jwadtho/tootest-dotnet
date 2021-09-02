@@ -31,10 +31,8 @@ spec:
           - /bin/sh
           - /xom-data/run.sh
         env:
-        - name: aliyun_logs_tootest_dotnet
-          value: stdout
         - name: APP_PATH
-          value: /app/tootest-dotnet.dll
+          value: /app/Xom.Bcs.tootest-dotnet.Api.dll
         - name: DD_ENV
           valueFrom:
             fieldRef:

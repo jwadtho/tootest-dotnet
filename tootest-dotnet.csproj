@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>tootest_dotnet</RootNamespace>
 	<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+	<AssemblyName>Xom.Bcs.tootest-dotnet.Api.dll</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

@@ -73,4 +73,4 @@ ENV DD_RUNTIME_METRICS_ENABLED=true
 ENV DD_TRACE_ENABLED=true
 
 
-ENTRYPOINT ["dotnet", "tootest-dotnet.dll"]
+ENTRYPOINT ["dotnet", "Xom.Bcs.tootest-dotnet.Api.dll"]
