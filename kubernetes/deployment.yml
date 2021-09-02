@@ -29,10 +29,8 @@ spec:
         imagePullPolicy: IfNotPresent
         command: [ "/bin/sh", "-c" ]
         args:
-          - /tracer-download/run.sh
+          - /tracer-download/install-tracer-and-run-app.sh
         env:
-        - name: APP_PATH
-          value: /app/Xom.Bcs.tootest-dotnet.Api.dll
         - name: DD_ENV
           valueFrom:
             fieldRef:
@@ -117,7 +115,7 @@ spec:
 
       initContainers:
         - name: datadog-tracer
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/dotnet-datadog-tracer:1.2
+          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/dotnet-datadog-tracer:1.3
           command: [ "bash", "-c" ]
           args:
             - cp -r /tracer-download /dd-temp
