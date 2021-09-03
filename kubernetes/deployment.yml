@@ -59,8 +59,8 @@ spec:
         resources:
           requests:
             cpu: "0.5"
-      - name: log-collector
-        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/fluentbit_sidecar:3.4
+      - name: log-forwarder
+        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/log-forwarder:3.5
         command: [ "/bin/sh", "-c" ]
         args:
           - |
