@@ -22,7 +22,7 @@ spec:
         tags.datadoghq.com/source: "csharp"
         tags.datadoghq.com/occ-service-domain: "tootest"
     spec:
-      serviceAccountName: datadog-agent
+      serviceAccountName: datadog
       containers:
       - name: tootest-dotnet
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
@@ -44,7 +44,7 @@ spec:
             fieldRef:
               fieldPath: metadata.labels['tags.datadoghq.com/version']
         - name: DD_AGENT_HOST
-          value: "datadog-service.tootest.svc.cluster.local"
+          value: "datadog-agent.datadog.svc.cluster.local"
         - name: DD_LOGS_INJECTION
           value: "true"
         - name: DD_RUNTIME_METRICS_ENABLED
