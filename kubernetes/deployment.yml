@@ -27,9 +27,7 @@ spec:
       - name: tootest-dotnet
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
         imagePullPolicy: IfNotPresent
-
-
-      resources:
-        requests:
-          cpu: "0.5"
+        resources:
+          requests:
+            cpu: "0.5"
 
