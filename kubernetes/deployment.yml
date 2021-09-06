@@ -14,6 +14,7 @@ spec:
     metadata:
       annotations:
         k8s.aliyun.com/acr-instance-id: cri-3fynibeigjxpi5o6
+        k8s.oneconnect.xom.cn/datadog-dotnet: "true"
       labels:
         app: tootest-dotnet
         tags.datadoghq.com/env: "occ-tootest"
@@ -27,119 +28,9 @@ spec:
       - name: tootest-dotnet
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
         imagePullPolicy: IfNotPresent
-        command: [ "/bin/sh", "-c" ]
-        args:
-          - /tracer-download/install-tracer-and-run-app.sh
-        env:
-        - name: DD_ENV
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/env']
-        - name: DD_SERVICE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/service']
-        - name: DD_VERSION
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/version']
-        - name: DD_AGENT_HOST
-          value: "datadog-agent.datadog.svc.cluster.local"
-        - name: DD_LOGS_INJECTION
-          value: "true"
-        - name: DD_RUNTIME_METRICS_ENABLED
-          value: "true"
-        ports:
-        - containerPort: 4477
-        volumeMounts:
-          - name: log-storage
-            mountPath: /app/logs/
-          - name: tracer-download
-            mountPath: /tracer-download
-        resources:
-          requests:
-            cpu: "0.5"
-      - name: log-forwarder
-        image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/log-forwarder:3.5
-        command: [ "/bin/sh", "-c" ]
-        args:
-          - |
-            tagger /fluent-bit/etc/output-datadog.conf /fluent-bit/etc/input-tail.conf
-            /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
-        env:
-        - name: AUTO_INJECT_LOG_PATH
-          value: "true"
-        - name: KUBE_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: KUBE_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: DD_ENV
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/env']
-        - name: DD_SERVICE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/service']
-        - name: DD_VERSION
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/version']
-        - name: DD_SOURCE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/source']
-        - name: OCC_SERVICE_DOMAIN
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/occ-service-domain']
-        resources:
-          limits:
-            cpu: 100m
-            memory: 200Mi
-        volumeMounts:
-          - name: tagger
-            mountPath: /bin/tagger
-            subPath: tagger
-          - name: pod-stdlog
-            readOnly: true
-            mountPath: /pod-stdlog
-          - name: fluentbit-db
-            mountPath: /fluentbit-db
 
-      initContainers:
-        - name: datadog-tracer
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/bcs/dotnet-datadog-tracer:1.3
-          command: [ "bash", "-c" ]
-          args:
-            - cp -r /tracer-download /dd-temp
-          volumeMounts:
-            - name: tracer-download
-              mountPath: /dd-temp/tracer-download
-        - name: tagger
-          image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/datadog/tagger:2.1
-          imagePullPolicy: IfNotPresent
-          command: [ "/bin/sh", "-c" ]
-          args:
-            - cp -r /usr/local/bin/tagger /tagger
-          volumeMounts:
-            - mountPath: /tagger
-              name: tagger
-      volumes:
-      - name: pod-stdlog
-        flexVolume:
-          driver: alicloud/pod-stdlog
-      - name: log-storage
-        emptyDir: { }
-      - name: tracer-download
-        emptyDir: { }
-      - name: tagger
-        emptyDir: {}
-      - name: fluentbit-db
-        emptyDir: {}
+
+      resources:
+        requests:
+          cpu: "0.5"
+
