@@ -23,7 +23,6 @@ spec:
         tags.datadoghq.com/source: "csharp"
         tags.datadoghq.com/occ-service-domain: "tootest"
     spec:
-      serviceAccountName: datadog
       containers:
       - name: tootest-dotnet
         image: xom-ecomm-acr02-registry.cn-shanghai.cr.aliyuncs.com/tootest/tootest-dotnet:GITHUB_SHA
